@@ -5,9 +5,10 @@
       <router-link to="/signup">Registration</router-link>
     </nav>
     <nav v-else>
-      <router-link to="/" @click="logout">Logout</router-link> |
+      <router-link to="/login" @click="logout">Logout</router-link> |
       <router-link to="/cart">Cart</router-link> |
-      <router-link to="/">Products</router-link>
+      <router-link to="/">Products</router-link> | 
+      <router-link to="/orders">Orders</router-link>
     </nav>
   </v-container>
 </template>

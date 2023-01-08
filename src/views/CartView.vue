@@ -17,8 +17,8 @@
           <td>{{ product.description }}</td>
           <td>{{ product.price }}</td>
           <td>
-            <span @click="addToCart(product.product_id)">+</span> 
-            {{ product.count }} 
+            <span @click="addToCart(product.product_id)">+</span>
+            {{ product.count }}
             <span @click="removeFromCart(product.id)">-</span>
           </td>
         </tr>
@@ -45,14 +45,14 @@ export default {
   },
   methods: {
     makeAnOrder() {
-      console.log('Ordered');
+      this.$store.dispatch('MAKE_AN_ORDER');
     },
-    addToCart(productId){
-         this.$store.dispatch('INCREMENT_PRODUCT_COUNT', productId);
+    addToCart(productId) {
+      this.$store.dispatch('INCREMENT_PRODUCT_COUNT', productId);
     },
-    removeFromCart(productId){
-        this.$store.dispatch('DECREMENT_PRODUCT_COUNT', productId);
-    }
+    removeFromCart(productId) {
+      this.$store.dispatch('DECREMENT_PRODUCT_COUNT', productId);
+    },
   },
   created() {
     this.$store.dispatch('CART_REQ');

@@ -1,7 +1,6 @@
 const API = process.env.VUE_APP_API;
-const token = localStorage.getItem('user-token');
 
-export const getProduct = () => {
+export const getProduct = (token) => {
   return new Promise((resolve, reject) => {
     fetch(`${API}/products`, {
       method: 'GET',
@@ -16,7 +15,7 @@ export const getProduct = () => {
   });
 };
 
-export const getCart = () => {
+export const getCart = (token) => {
   return new Promise((resolve, reject) => {
     fetch(`${API}/cart`, {
       method: 'GET',
@@ -33,7 +32,7 @@ export const getCart = () => {
   });
 };
 
-export const addToCart = (productId) => {
+export const addToCart = ({ productId, token }) => {
   return new Promise((resolve, reject) => {
     fetch(`${API}/cart/${productId}`, {
       method: 'POST',
@@ -48,7 +47,7 @@ export const addToCart = (productId) => {
   });
 };
 
-export const removeFromCart = (productId) => {
+export const removeFromCart = ({ productId, token }) => {
   return new Promise((resolve, reject) => {
     fetch(`${API}/cart/${productId}`, {
       method: 'DELETE',
