@@ -47,3 +47,18 @@ export const addToCart = (productId) => {
       .catch((error) => reject(error));
   });
 };
+
+export const removeFromCart = (productId) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${API}/cart/${productId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => resolve(result))
+      .catch((error) => reject(error));
+  });
+};

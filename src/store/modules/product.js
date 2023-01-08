@@ -1,4 +1,9 @@
-import { getProduct, addToCart, getCart } from '@/utils/productApi.js';
+import {
+  getProduct,
+  addToCart,
+  getCart,
+  removeFromCart,
+} from '@/utils/productApi.js';
 
 export default {
   state: () => ({
@@ -16,6 +21,22 @@ export default {
     },
     ADD_TO_CART: ({ commit }, productId) => {
       addToCart(productId).then(() => commit('add_to_cart', productId));
+    },
+    INCREMENT_PRODUCT_COUNT: ({ commit, state }, productId) => {
+      const productToAdd = state.cart.find((pr) => pr.product_id == productId);
+      if (productToAdd) {
+        addToCart(productId).then(() =>
+          commit('increment_product_count', productId)
+        );
+      }
+    },
+    DECREMENT_PRODUCT_COUNT: ({ commit, state }, productId) => {
+      const productToAdd = state.cart.find((pr) => pr.id == productId);
+      if (productToAdd) {
+        removeFromCart(productId).then(() =>
+          commit('decrement_product_count', productId)
+        );
+      }
     },
     CART_REQ: ({ commit }) => {
       getCart()
@@ -38,6 +59,19 @@ export default {
         state.products.find((product) => product.id === productId)
       );
     },
+    increment_product_count: (state, productId) => {
+      const productToIncrement = state.cart.find(
+        (pr) => pr.product_id === productId
+      );
+      state.cart.push(productToIncrement);
+    },
+    decrement_product_count: (state, productId) => {
+      const productToIncrement = state.cart.find((pr) => pr.id === productId);
+      const index = state.cart.indexOf(productToIncrement);
+      if (index !== -1) {
+        state.cart.splice(index, 1);
+      }
+    },
   },
 
   getters: {
@@ -52,7 +86,9 @@ export default {
           elem.count++;
         }
       });
-      return result;
+      return result.sort((a, b) => {
+        return b.name > a.name;
+      });
     },
   },
 };

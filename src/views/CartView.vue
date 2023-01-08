@@ -16,11 +16,15 @@
           <td>{{ product.name }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.price }}</td>
-          <td>{{ product.count }}</td>
+          <td>
+            <span @click="addToCart(product.product_id)">+</span> 
+            {{ product.count }} 
+            <span @click="removeFromCart(product.id)">-</span>
+          </td>
         </tr>
       </tbody>
     </v-table>
-    <h2>Total : {{ total }}</h2>
+    <h2>Total : {{ total }} p.</h2>
     <v-btn variant="flat" @click="makeAnOrder()" color="secondary">
       Make an order
     </v-btn>
@@ -34,13 +38,21 @@ export default {
       return this.$store.getters.getCart;
     },
     total() {
-      return 46;
+      let result = 0;
+      this.products.map((el) => (result += +el.count * +el.price));
+      return result;
     },
   },
   methods: {
     makeAnOrder() {
       console.log('Ordered');
     },
+    addToCart(productId){
+         this.$store.dispatch('INCREMENT_PRODUCT_COUNT', productId);
+    },
+    removeFromCart(productId){
+        this.$store.dispatch('DECREMENT_PRODUCT_COUNT', productId);
+    }
   },
   created() {
     this.$store.dispatch('CART_REQ');
@@ -48,4 +60,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+span {
+  cursor: pointer;
+}
+</style>
