@@ -12,7 +12,7 @@
       </thead>
       <tbody>
         <tr v-for="(product, index) in products" :key="product.id">
-          <td>{{ index + 1 }}</td>
+          <td>{{ index + 1 + productsPerPage * (page - 1) }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.price }}</td>
@@ -28,11 +28,20 @@
         </tr>
       </tbody>
     </v-table>
+    <div class="text-center">
+      <v-pagination v-model="page" :length="length"></v-pagination>
+    </div>
   </v-container>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      page: 1,
+      productsPerPage: 10,
+    };
+  },
   methods: {
     addToCart(productId) {
       this.$store.dispatch('ADD_TO_CART', productId);
@@ -43,7 +52,15 @@ export default {
   },
   computed: {
     products() {
-      return this.$store.getters.getAllProducts;
+      return this.$store.getters.getAllProducts.slice(
+        (this.page - 1) * this.productsPerPage,
+        this.page * this.productsPerPage
+      );
+    },
+    length() {
+      return Math.round(
+        this.$store.getters.getAllProducts.length / this.productsPerPage
+      );
     },
   },
 };
