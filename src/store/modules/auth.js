@@ -58,7 +58,6 @@ export default {
     },
     AUTH_LOGOUT: ({ commit, state }) => {
       return new Promise((resolve) => {
-        console.log('logout', state.token);
         logoutRequest(state.token).then(() => {
           commit('auth_logout');
           localStorage.removeItem('user-token');

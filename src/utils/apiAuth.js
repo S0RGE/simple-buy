@@ -37,8 +37,11 @@ export const registrationRequest = (userData) => {
 export const logoutRequest = (token) => {
   return new Promise((resolve) => {
     fetch(`${API}/logout`, {
-      Authorization: `bearer ${token}`,
-    })
-    .then((response) => resolve(response));
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => resolve(response));
   });
 };
