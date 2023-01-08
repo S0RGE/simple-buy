@@ -1,5 +1,9 @@
 import { createStore } from 'vuex';
-import { loginRequest, registrationRequest } from '@/utils/api.js';
+import {
+  loginRequest,
+  registrationRequest,
+  logoutRequest,
+} from '@/utils/api.js';
 
 export default createStore({
   state: {
@@ -7,7 +11,6 @@ export default createStore({
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
-    authStatus: (state) => state.status,
   },
   mutations: {
     auth_success: (state, token) => {
@@ -16,29 +19,49 @@ export default createStore({
     auth_error: (state) => {
       state.token = '';
     },
+    auth_logout: (state) => {
+      state.token = '';
+    },
   },
   actions: {
     AUTH_REQUEST: ({ commit }, user) => {
-      loginRequest(user)
-        .then((token) => {
-          commit('auth_success', token);
-          localStorage.setItem('myAppToken', token);
-        })
-        .catch(() => {
-          commit('auth_error');
-          localStorage.removeItem('myAppToken');
-        });
+      return new Promise((resolve, reject) => {
+        loginRequest(user)
+          .then((token) => {
+            commit('auth_success', token);
+            localStorage.setItem('myAppToken', token);
+            resolve();
+          })
+          .catch(() => {
+            commit('auth_error');
+            localStorage.removeItem('myAppToken');
+            reject();
+          });
+      });
     },
     REG_REQUEST: ({ commit }, user) => {
-      registrationRequest(user)
-        .then((token) => {
-          commit('auth_success', token);
-          localStorage.setItem('myAppToken', token);
-        })
-        .catch(() => {
-          commit('auth_error');
+      return new Promise((resolve, reject) => {
+        registrationRequest(user)
+          .then((token) => {
+            commit('auth_success', token);
+            localStorage.setItem('myAppToken', token);
+            resolve();
+          })
+          .catch(() => {
+            commit('auth_error');
+            localStorage.removeItem('myAppToken');
+            reject();
+          });
+      });
+    },
+    AUTH_LOGOUT: ({ commit, state }) => {
+      return new Promise((resolve) => {
+        logoutRequest(state.token).then(() => {
+          commit('auth_logout');
           localStorage.removeItem('myAppToken');
+          resolve();
         });
+      });
     },
   },
   modules: {},
