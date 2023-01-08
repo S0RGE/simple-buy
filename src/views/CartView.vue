@@ -55,7 +55,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('CART_REQ');
+    if (this.$store.getters.getCart.length <= 0) this.$store.dispatch('CART_REQ');
   },
 };
 </script>

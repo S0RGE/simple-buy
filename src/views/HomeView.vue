@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(product, index) in products" :key="product.id">
+        <tr v-for="(product, index) in paginatedProducts" :key="product.id">
           <td>{{ index + 1 + productsPerPage * (page - 1) }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.description }}</td>
@@ -29,7 +29,7 @@
       </tbody>
     </v-table>
     <div class="text-center">
-      <v-pagination v-model="page" :length="length"></v-pagination>
+      <v-pagination v-model="page" :length="paginationLength"></v-pagination>
     </div>
   </v-container>
 </template>
@@ -48,16 +48,16 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('PRODUCT_REQ');
+    if (this.$store.getters.getAllProducts.length <= 0) this.$store.dispatch('PRODUCT_REQ');
   },
   computed: {
-    products() {
+    paginatedProducts() {
       return this.$store.getters.getAllProducts.slice(
         (this.page - 1) * this.productsPerPage,
         this.page * this.productsPerPage
       );
     },
-    length() {
+    paginationLength() {
       return Math.round(
         this.$store.getters.getAllProducts.length / this.productsPerPage
       );
