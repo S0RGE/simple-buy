@@ -1,7 +1,6 @@
 import { getProduct, addToCart, getCart } from '@/utils/productApi.js';
 
 export default {
-
   state: () => ({
     products: [],
     cart: [],
@@ -26,7 +25,7 @@ export default {
         .catch((error) => console.error(error));
     },
   },
-  
+
   mutations: {
     product_req: (state, products) => {
       state.products = products;
@@ -43,7 +42,17 @@ export default {
 
   getters: {
     getAllProducts: (state) => state.products,
-    getCart: (state) => state.cart,
+    getCart: (state) => {
+      const result = [];
+      state.cart.forEach((product) => {
+        const elem = result.find((p) => p.product_id === product.product_id);
+        if (!elem) {
+          result.push(Object.assign(product, { count: 1 }));
+        } else {
+          elem.count++;
+        }
+      });
+      return result;
+    },
   },
-  
 };

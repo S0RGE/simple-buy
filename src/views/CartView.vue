@@ -7,7 +7,7 @@
           <th class="text-left">Name</th>
           <th class="text-left">Description</th>
           <th class="text-left">Price</th>
-          <th class="text-left">Activities</th>
+          <th class="text-left">Count</th>
         </tr>
       </thead>
       <tbody>
@@ -16,18 +16,14 @@
           <td>{{ product.name }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.price }}</td>
-          <td>
-            <v-btn
-              variant="flat"
-              @click="addToCart(product.id)"
-              color="secondary"
-            >
-              Add to cart
-            </v-btn>
-          </td>
+          <td>{{ product.count }}</td>
         </tr>
       </tbody>
     </v-table>
+    <h2>Total : {{ total }}</h2>
+    <v-btn variant="flat" @click="makeAnOrder()" color="secondary">
+      Make an order
+    </v-btn>
   </v-container>
 </template>
 
@@ -36,6 +32,14 @@ export default {
   computed: {
     products() {
       return this.$store.getters.getCart;
+    },
+    total() {
+      return 46;
+    },
+  },
+  methods: {
+    makeAnOrder() {
+      console.log('Ordered');
     },
   },
   created() {
