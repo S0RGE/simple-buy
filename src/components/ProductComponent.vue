@@ -4,6 +4,7 @@
     <td>{{ product.name }}</td>
     <td>{{ product.description }}</td>
     <td>{{ product.price }}</td>
+    <td v-if="product.count">{{ product.count }}</td>
     <td>
       <v-btn
         v-if="isAuthenticated"
@@ -26,11 +27,6 @@ export default {
     productNumber: {
       type: Number,
     },
-    isAuthenticated: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
   },
   emits: {
     'add-to-cart': (value) => typeof value === 'number',
@@ -38,6 +34,11 @@ export default {
   methods: {
     addToCart(productId) {
       this.$emit('add-to-cart', productId);
+    },
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
     },
   },
 };

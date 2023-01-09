@@ -17,7 +17,6 @@
           :key="product.id"
           :productNumber="productNumber(index)"
           @add-to-cart="addToCart"
-          :isAuthenticated="isAuthenticated"
         />
       </tbody>
     </v-table>

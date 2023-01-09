@@ -10,13 +10,13 @@ export default {
     status: '',
   }),
   mutations: {
-    auth_success: (state, token) => {
+    AUTH_SUCCESS: (state, token) => {
       state.token = token;
     },
-    auth_error: (state) => {
+    AUTH_ERROR: (state) => {
       state.token = '';
     },
-    auth_logout: (state) => {
+    AUTH_LOGOUT: (state) => {
       state.token = '';
     },
   },
@@ -30,12 +30,12 @@ export default {
       return new Promise((resolve, reject) => {
         loginRequest(user)
           .then((token) => {
-            commit('auth_success', token);
+            commit('AUTH_SUCCESS', token);
             localStorage.setItem('user-token', token);
             resolve();
           })
           .catch(() => {
-            commit('auth_error');
+            commit('AUTH_ERROR');
             localStorage.removeItem('user-token');
             reject();
           });
@@ -45,12 +45,12 @@ export default {
       return new Promise((resolve, reject) => {
         registrationRequest(user)
           .then((token) => {
-            commit('auth_success', token);
+            commit('AUTH_SUCCESS', token);
             localStorage.setItem('user-token', token);
             resolve();
           })
           .catch(() => {
-            commit('auth_error');
+            commit('AUTH_ERROR');
             localStorage.removeItem('user-token');
             reject();
           });
@@ -59,7 +59,7 @@ export default {
     AUTH_LOGOUT: ({ commit, state }) => {
       return new Promise((resolve) => {
         logoutRequest(state.token).then(() => {
-          commit('auth_logout');
+          commit('AUTH_LOGOUT');
           localStorage.removeItem('user-token');
           resolve();
         });
