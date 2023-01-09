@@ -37,8 +37,14 @@ export default {
   computed: {
     products() {
       const products = [];
-      this.order.products.forEach(prodId => {
-        products.push(this.$store.getters.getProdustById(prodId))
+      this.order.products.forEach((prodId) => {
+        const prod = this.$store.getters.getProdustById(prodId);
+        const elem = products.find((p) => p.id === prodId);
+        if (!elem) {
+          products.push(Object.assign({}, prod, { count: 1 }));
+        } else {
+          elem.count++;
+        }
       });
       return products;
     },

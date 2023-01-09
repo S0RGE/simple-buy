@@ -86,7 +86,7 @@ export default {
       state.cart.forEach((product) => {
         const elem = result.find((p) => p.product_id === product.product_id);
         if (!elem) {
-          result.push(Object.assign(product, { count: 1 }));
+          result.push(Object.assign({}, product, { count: 1 }));
         } else {
           elem.count++;
         }
