@@ -9,6 +9,9 @@ a {
   text-decoration: none;
   color: inherit;
 }
+nav a.router-link-exact-active {
+  color: #4CAF50;
+}
 </style>
 
 <script>

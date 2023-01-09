@@ -77,6 +77,9 @@ export default {
   },
 
   getters: {
+    getProdustById: (state) => (productId) => {
+      return state.products.find((product) => product.id === productId);
+    },
     getAllProducts: (state) => state.products,
     getCart: (state) => {
       const result = [];

@@ -30,7 +30,7 @@ const routes = [
     path: '/orders',
     name: 'orders',
     component: function () {
-      return import('../components/OrdersComponent.vue');
+      return import('../views/OrdersView.vue');
     },
     beforeEnter: ifAuthenticated,
   },
