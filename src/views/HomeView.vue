@@ -7,25 +7,18 @@
           <th class="text-left">Name</th>
           <th class="text-left">Description</th>
           <th class="text-left">Price</th>
-          <th class="text-left">Activities</th>
+          <th class="text-left" v-if="isAuthenticated">Activities</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(product, index) in paginatedProducts" :key="product.id">
-          <td>{{ index + 1 + productsPerPage * (page - 1) }}</td>
-          <td>{{ product.name }}</td>
-          <td>{{ product.description }}</td>
-          <td>{{ product.price }}</td>
-          <td>
-            <v-btn
-              variant="flat"
-              @click="addToCart(product.id)"
-              color="secondary"
-            >
-              Add to cart
-            </v-btn>
-          </td>
-        </tr>
+        <product-component
+          v-for="(product, index) in paginatedProducts"
+          :product="product"
+          :key="product.id"
+          :productNumber="productNumber(index)"
+          @add-to-cart="addToCart"
+          :isAuthenticated="isAuthenticated"
+        />
       </tbody>
     </v-table>
     <div class="text-center">
@@ -35,6 +28,8 @@
 </template>
 
 <script>
+import ProductComponent from '@/components/ProductComponent.vue';
+
 export default {
   data() {
     return {
@@ -42,13 +37,20 @@ export default {
       productsPerPage: 10,
     };
   },
+  components: {
+    ProductComponent,
+  },
   methods: {
     addToCart(productId) {
       this.$store.dispatch('ADD_TO_CART', productId);
     },
+    productNumber(idx) {
+      return idx + 1 + this.productsPerPage * (this.page - 1);
+    },
   },
   created() {
-    if (this.$store.getters.getAllProducts.length <= 0) this.$store.dispatch('PRODUCT_REQ');
+    if (this.$store.getters.getAllProducts.length <= 0)
+      this.$store.dispatch('PRODUCT_REQ');
   },
   computed: {
     paginatedProducts() {
@@ -62,6 +64,9 @@ export default {
         this.$store.getters.getAllProducts.length / this.productsPerPage
       );
     },
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated
+    }
   },
 };
 </script>
