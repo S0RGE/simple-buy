@@ -1,4 +1,4 @@
-const API = 'https://jurapro.bhuser.ru/api-shop';
+const API = process.env.VUE_APP_API;
 
 export const loginRequest = (user) => {
   return new Promise((resolve, reject) => {
@@ -32,4 +32,16 @@ export const registrationRequest = (user) => {
         reject(error);
       });
   });
-}
+};
+
+export const logoutRequest = (token) => {
+  return new Promise((resolve) => {
+    fetch(`${API}/logout`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => resolve(response));
+  });
+};

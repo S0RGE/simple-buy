@@ -1,10 +1,17 @@
 <template>
-  <nav>
-    <router-link to="/login">Login</router-link> |
-    <router-link to="/register">Register</router-link>
-  </nav>
+  <header-component />
   <router-view />
 </template>
+
+<script>
+import HeaderComponent from '@/components/HeaderComponent.vue';
+
+export default {
+  components: {
+    HeaderComponent,
+  },
+};
+</script>
 
 <style>
 nav {
