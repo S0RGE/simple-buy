@@ -7,13 +7,12 @@ export default createStore({
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
-    authStatus: (state) => state.status,
   },
   mutations: {
-    auth_success: (state, token) => {
+    AUTH_SUCCESS: (state, token) => {
       state.token = token;
     },
-    auth_error: (state) => {
+    AUTH_ERROR: (state) => {
       state.token = '';
     },
   },
@@ -21,22 +20,22 @@ export default createStore({
     AUTH_REQUEST: ({ commit }, user) => {
       loginRequest(user)
         .then((token) => {
-          commit('auth_success', token);
+          commit('AUTH_SUCCESS', token);
           localStorage.setItem('myAppToken', token);
         })
         .catch(() => {
-          commit('auth_error');
+          commit('AUTH_ERROR');
           localStorage.removeItem('myAppToken');
         });
     },
     REG_REQUEST: ({ commit }, user) => {
       registrationRequest(user)
         .then((token) => {
-          commit('auth_success', token);
+          commit('AUTH_SUCCESS', token);
           localStorage.setItem('myAppToken', token);
         })
         .catch(() => {
-          commit('auth_error');
+          commit('AUTH_ERROR');
           localStorage.removeItem('myAppToken');
         });
     },
