@@ -31,5 +31,16 @@ export default {
     FooterComponent,
     NavigationComponent,
   },
+  created() {
+    if (localStorage.getItem('user-token'))
+      this.$store
+        .dispatch('CART_REQ')
+        .then((response) => {
+          if (response.error?.message === 'Login failed') {
+            this.$store.dispatch('AUTH_LOGOUT');
+          }
+        })
+        .then(() => this.$router.push('/'));
+  },
 };
 </script>

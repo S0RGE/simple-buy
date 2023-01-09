@@ -41,11 +41,16 @@ export default {
       }
     },
     CART_REQ: ({ commit, rootState }) => {
-      getCart(rootState.auth.token)
-        .then((response) => {
-          commit('CART_REQ', response.data);
-        })
-        .catch((error) => console.error(error));
+      return new Promise((resolve, reject) => {
+        getCart(rootState.auth.token)
+          .then((response) => {
+            commit('CART_REQ', response.data);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     },
   },
 
@@ -83,7 +88,7 @@ export default {
     getAllProducts: (state) => state.products,
     getCart: (state) => {
       const result = [];
-      state.cart.forEach((product) => {
+      state.cart?.forEach((product) => {
         const elem = result.find((p) => p.product_id === product.product_id);
         if (!elem) {
           result.push(Object.assign({}, product, { count: 1 }));
