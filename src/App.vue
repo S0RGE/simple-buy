@@ -33,14 +33,12 @@ export default {
   },
   created() {
     if (localStorage.getItem('user-token'))
-      this.$store
-        .dispatch('CART_REQ')
-        .then((response) => {
-          if (response.error?.message === 'Login failed') {
-            this.$store.dispatch('AUTH_LOGOUT');
-          }
-        })
-        .then(() => this.$router.push('/'));
+      this.$store.dispatch('CART_REQ').then((response) => {
+        if (response.error?.message === 'Login failed') {
+          this.$store.dispatch('AUTH_LOGOUT');
+          this.$router.push('/');
+        }
+      });
   },
 };
 </script>

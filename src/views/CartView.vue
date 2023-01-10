@@ -24,7 +24,7 @@
         </tr>
       </tbody>
     </v-table>
-    <h2>Total : {{ total }} p.</h2>
+    <h2>Total : {{ total }} </h2>
     <v-btn v-if="total > 0" variant="flat" @click="makeAnOrder()" color="secondary">
       Make an order
     </v-btn>

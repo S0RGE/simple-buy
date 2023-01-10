@@ -62,8 +62,18 @@ export default {
       state.cart = products;
     },
     ADD_TO_CART: (state, productId) => {
+      // Since only the answer ok comes from the backend, you need to add product_id and id, the creation algorithm is simply an increase by 1
+
+      let newProductId = state.cart[state.cart.length - 1].id;
       state.cart.push(
-        state.products.find((product) => product.id === productId)
+        Object.assign(
+          {},
+          state.products.find((product) => product.id === productId),
+          {
+            product_id: productId,
+            id: ++newProductId,
+          }
+        )
       );
     },
     INCREMENT_PRODUCT_COUNT: (state, productId) => {
