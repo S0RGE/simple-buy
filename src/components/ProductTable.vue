@@ -6,7 +6,15 @@
       </tr>
     </thead>
     <tbody>
-      <product-line v-for="product in products" :key="product.id" />
+      <product-line
+        v-for="product in products"
+        :key="product.id"
+        :product="product"
+      >
+        <td>
+          <slot>asdf</slot>
+        </td>
+      </product-line>
     </tbody>
   </v-table>
 </template>

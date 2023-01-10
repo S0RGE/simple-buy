@@ -1,25 +1,7 @@
 <template>
   <v-container>
-    <v-table>
-      <thead>
-        <tr>
-          <th class="text-left">Number</th>
-          <th class="text-left">Name</th>
-          <th class="text-left">Description</th>
-          <th class="text-left">Price</th>
-          <th class="text-left" v-if="isAuthenticated">Activities</th>
-        </tr>
-      </thead>
-      <tbody>
-        <product-component
-          v-for="(product, index) in paginatedProducts"
-          :product="product"
-          :key="product.id"
-          :productNumber="productNumber(index)"
-          @add-to-cart="addToCart"
-        />
-      </tbody>
-    </v-table>
+    <product-table :theaders="tableHeaders" :products="paginatedProducts">
+    </product-table>
     <div class="text-center">
       <v-pagination v-model="page" :length="paginationLength"></v-pagination>
     </div>
@@ -27,7 +9,7 @@
 </template>
 
 <script>
-import ProductComponent from '@/components/ProductComponent.vue';
+import ProductTable from '@/components/ProductTable.vue';
 
 export default {
   data() {
@@ -37,7 +19,7 @@ export default {
     };
   },
   components: {
-    ProductComponent,
+    ProductTable,
   },
   methods: {
     addToCart(productId) {
@@ -64,8 +46,13 @@ export default {
       );
     },
     isAuthenticated() {
-      return this.$store.getters.isAuthenticated
-    }
+      return this.$store.getters.isAuthenticated;
+    },
+    tableHeaders() {
+      const tableHeaders = ['Number', 'Name', 'Description', 'Price', 'Activities'];
+      this.isAuthenticated ?? tableHeaders.push('Activities');
+      return tableHeaders;
+    },
   },
 };
 </script>
