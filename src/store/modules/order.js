@@ -11,15 +11,29 @@ export default {
       return new Promise((resolve, reject) => {
         makeAnOrderRequest(rootState.auth.token)
           .then((response) => {
-            commit('MAKE_AN_ORDER', response);
+            const order_price = rootState.product.cart.reduce(
+              (acc, value) => acc + +value.price,
+              0
+            );
+            const products = rootState.product.cart.reduce(
+              (acc, value) => acc.concat(value.product_id),
+              []
+            );
+            const newOrder = {
+              id: response.data.order_id,
+              order_price,
+              products,
+            };
+
+            commit('MAKE_AN_ORDER', newOrder);
             rootState.product.cart = [];
             resolve();
           })
           .catch((error) => {
-            setError(error.error.message, rootState);
+            setError(error.error?.message, rootState);
             reject(error);
           });
-          rootState.status = '';
+        rootState.status = '';
       });
     },
     ORDER_REQ: ({ commit, rootState }) => {
@@ -31,10 +45,10 @@ export default {
             resolve(response);
           })
           .catch((error) => {
-            setError(error.error.message, rootState);
+            setError(error.error?.message, rootState);
             reject(error);
           });
-          rootState.status = '';
+        rootState.status = '';
       });
     },
   },

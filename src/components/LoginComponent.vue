@@ -2,7 +2,7 @@
   <v-container>
     <v-form
       @submit.prevent="login"
-      ref="form"
+      ref="loginForm"
       class="v-col-sm-12 v-col-lg-10 mx-auto"
       lazy-validation
     >
@@ -31,7 +31,7 @@
 export default {
   data: () => {
     return {
-      email: 'JohnDoe666@mail.ru',
+      email: 'JohnDoe@mail.com',
       emailRules: [
         (v) => !!v || 'E-mail is required',
         (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -43,7 +43,7 @@ export default {
 
   methods: {
     async login() {
-      const { valid } = await this.$refs.form.validate();
+      const { valid } = await this.$refs.loginForm.validate();
       if (!valid) return;
       const userData = {
         email: this.email,

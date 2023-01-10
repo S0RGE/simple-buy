@@ -36,6 +36,7 @@ export default {
             resolve();
           })
           .catch((error) => {
+            // TODO: refactor validation
             setError(error.error.message, rootState);
             commit('AUTH_ERROR');
             localStorage.removeItem('user-token');

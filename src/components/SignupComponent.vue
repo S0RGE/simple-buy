@@ -1,9 +1,8 @@
 <template>
   <v-form
     @submit.prevent="register"
-    ref="form"
+    ref="regForm"
     class="v-col-sm-12 v-col-lg-10 mx-auto"
-    v-model="valid"
     lazy-validation
   >
     <v-text-field
@@ -38,7 +37,8 @@
 
     <v-text-field
       v-model="passwordRepeate"
-      :rules="[passwordRules, matchingPassword]"
+      :rules="passwordRules"
+      :error-messages="matchError"
       type="password"
       label="Password repeate"
       required
@@ -51,14 +51,13 @@
 <script>
 export default {
   data: () => ({
-    valid: false,
-    username: '',
-    usersurname: '',
+    username: 'John',
+    usersurname: 'Doe',
     userfioRules: [
       (v) => !!v || 'Field is required',
       (v) => (v && v.length <= 10) || 'Name must be less than 10 characters',
     ],
-    email: '',
+    email: 'JohnDoe@mail.com',
     emailRules: [
       (v) => !!v || 'E-mail is required',
       (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -67,13 +66,21 @@ export default {
       (v) => !!v || 'Password is required',
       (v) => (v && v.length >= 6) || 'Password must be more than 6 characters',
     ],
-    password: '',
-    passwordRepeate: '',
+    password: 'qweASD123',
+    passwordRepeate: 'qweASD123',
+    matchError: '',
   }),
 
   methods: {
-    register() {
-      if (!this.valid) {
+    async register() {
+      const { valid } = await this.$refs.regForm?.validate();
+      if (!valid) return;
+
+      if (this.password !== this.passwordRepeate) {
+        this.matchError = 'Passwords must match';
+        setTimeout(() => {
+          this.matchError = '';
+        }, 3000);
         return;
       }
 
@@ -85,15 +92,6 @@ export default {
       this.$store
         .dispatch('REG_REQUEST', userData)
         .then(() => this.$router.push('/'));
-    },
-  },
-  methods: {
-    matchingPassword(value) {
-      if (value === this.password) {
-        return true;
-      } else {
-        return 'Passwords must match';
-      }
     },
   },
   computed: {
