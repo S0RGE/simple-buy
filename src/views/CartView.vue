@@ -8,6 +8,7 @@
           <th class="text-left">Description</th>
           <th class="text-left">Price</th>
           <th class="text-left">Count</th>
+          <th class="text-left">Activities</th>
         </tr>
       </thead>
       <tbody>
@@ -21,12 +22,17 @@
             {{ product.count }}
             <span @click="removeFromCart(product.id)">-</span>
           </td>
+          <td>
+            <v-btn color="error" @click="deleteProducts(product.product_id)">
+              Delete
+            </v-btn>
+          </td>
         </tr>
       </tbody>
     </v-table>
     <h2>Total : {{ total }}</h2>
     <v-btn
-      v-if="total > 0"
+      :disabled="!(total > 0)"
       variant="flat"
       @click="makeAnOrder()"
       color="secondary"
@@ -49,6 +55,9 @@ export default {
     },
   },
   methods: {
+    deleteProducts(productId) {
+      this.$store.dispatch('DELETE_PRODUCTS_FROM_CART', productId);
+    },
     makeAnOrder() {
       this.$store
         .dispatch('MAKE_AN_ORDER')

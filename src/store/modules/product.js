@@ -12,6 +12,18 @@ export default {
   }),
 
   actions: {
+    DELETE_PRODUCTS_FROM_CART: ({ commit, state, rootState }, productId) => {
+      const productsToDelete = state.cart.filter(
+        (pr) => pr.product_id === productId
+      );
+      productsToDelete.forEach((product) => {
+        removeFromCart({
+          productId: product.id,
+          token: rootState.auth.token,
+        });
+      });
+      commit('DELETE_PRODUCTS_FROM_CART', productId);
+    },
     PRODUCT_REQ: ({ commit, rootState }) => {
       getProduct(rootState.auth.token)
         .then((response) => {
@@ -27,16 +39,22 @@ export default {
     INCREMENT_PRODUCT_COUNT: ({ commit, state, rootState }, productId) => {
       const productToAdd = state.cart.find((pr) => pr.product_id == productId);
       if (productToAdd) {
-        addToCart({ productId, token: rootState.auth.token }).then(() =>
-          commit('INCREMENT_PRODUCT_COUNT', productId)
+        addToCart({ productId, token: rootState.auth.token }).then(
+          (prodInfo) => {
+            const formatedProduct = Object.assign({}, productToAdd, {
+              product_id: prodInfo.data.product_id,
+              id: prodInfo.data.product_cart_id,
+            });
+            commit('INCREMENT_PRODUCT_COUNT', formatedProduct);
+          }
         );
       }
     },
     DECREMENT_PRODUCT_COUNT: ({ commit, state, rootState }, productId) => {
-      const productToAdd = state.cart.find((pr) => pr.id == productId);
-      if (productToAdd) {
+      const productToRemove = state.cart.find((pr) => pr.id == productId);
+      if (productToRemove) {
         removeFromCart({ productId, token: rootState.auth.token }).then(() =>
-          commit('DECREMENT_PRODUCT_COUNT', productId)
+          commit('DECREMENT_PRODUCT_COUNT', productToRemove)
         );
       }
     },
@@ -61,29 +79,27 @@ export default {
     CART_REQ: (state, products) => {
       state.cart = products;
     },
-    ADD_TO_CART: (state, {product_id, product_cart_id}) => {
-      const productToAdd = state.products.find(
-        (pr) => pr.id === product_id
-      );
+    ADD_TO_CART: (state, { product_id, product_cart_id }) => {
+      const productToAdd = state.products.find((pr) => pr.id === product_id);
       const formatedProduct = Object.assign({}, productToAdd, {
         product_id,
         id: product_cart_id,
       });
-
       state.cart.push(formatedProduct);
     },
-    INCREMENT_PRODUCT_COUNT: (state, productId) => {
-      const productToIncrement = state.cart.find(
-        (pr) => pr.product_id === productId
-      );
-      state.cart.push(productToIncrement);
+    INCREMENT_PRODUCT_COUNT: (state, productToAdd) => {
+      state.cart.push(productToAdd);
     },
-    DECREMENT_PRODUCT_COUNT: (state, productId) => {
-      const productToIncrement = state.cart.find((pr) => pr.id === productId);
-      const index = state.cart.indexOf(productToIncrement);
+    DECREMENT_PRODUCT_COUNT: (state, productToRemove) => {
+      const index = state.cart.indexOf(productToRemove);
       if (index !== -1) {
         state.cart.splice(index, 1);
       }
+    },
+    DELETE_PRODUCTS_FROM_CART: (state, productId) => {
+      state.cart = state.cart.filter(
+        (product) => product.product_id !== productId
+      );
     },
   },
 
