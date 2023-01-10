@@ -13,6 +13,7 @@ export default {
 
   actions: {
     DELETE_PRODUCTS_FROM_CART: ({ commit, state, rootState }, productId) => {
+      rootState.status = 'loading';
       const productsToDelete = state.cart.filter(
         (pr) => pr.product_id === productId
       );
@@ -23,20 +24,26 @@ export default {
         });
       });
       commit('DELETE_PRODUCTS_FROM_CART', productId);
+      rootState.status = '';
     },
     PRODUCT_REQ: ({ commit, rootState }) => {
+      rootState.status = 'loading';
       getProduct(rootState.auth.token)
         .then((response) => {
           commit('PRODUCT_REQ', response.data);
         })
         .catch((error) => console.error(error));
+      rootState.status = '';
     },
     ADD_TO_CART: ({ commit, rootState }, productId) => {
+      rootState.status = 'loading';
       addToCart({ productId, token: rootState.auth.token }).then((prod) =>
         commit('ADD_TO_CART', prod.data)
       );
+      rootState.status = '';
     },
     INCREMENT_PRODUCT_COUNT: ({ commit, state, rootState }, productId) => {
+      rootState.status = 'loading';
       const productToAdd = state.cart.find((pr) => pr.product_id == productId);
       if (productToAdd) {
         addToCart({ productId, token: rootState.auth.token }).then(
@@ -49,16 +56,20 @@ export default {
           }
         );
       }
+      rootState.status = '';
     },
     DECREMENT_PRODUCT_COUNT: ({ commit, state, rootState }, productId) => {
+      rootState.status = 'loading';
       const productToRemove = state.cart.find((pr) => pr.id == productId);
       if (productToRemove) {
         removeFromCart({ productId, token: rootState.auth.token }).then(() =>
           commit('DECREMENT_PRODUCT_COUNT', productToRemove)
         );
       }
+      rootState.status = '';
     },
     CART_REQ: ({ commit, rootState }) => {
+      rootState.status = 'loading';
       return new Promise((resolve, reject) => {
         getCart(rootState.auth.token)
           .then((response) => {
@@ -68,6 +79,7 @@ export default {
           .catch((error) => {
             reject(error);
           });
+          rootState.status = '';
       });
     },
   },

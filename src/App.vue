@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <loader-component v-if="$store.getters.loadStatus === 'loading'" />
     <navigation-component />
     <main class="main">
       <router-view />
@@ -25,9 +26,11 @@ nav a.router-link-exact-active {
 <script>
 import NavigationComponent from '@/components/NavigationComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
+import LoaderComponent from './components/LoaderComponent.vue';
 
 export default {
   components: {
+    LoaderComponent,
     FooterComponent,
     NavigationComponent,
   },
@@ -39,6 +42,11 @@ export default {
           this.$router.push('/');
         }
       });
+  },
+  computed: {
+    load() {
+      console.log(this.$store.getters.loadStatus);
+    },
   },
 };
 </script>

@@ -4,8 +4,12 @@ import product from './modules/product.js';
 import order from './modules/order.js';
 
 export default createStore({
-  state: {},
-  getters: {},
+  state: {
+    status: '',
+  },
+  getters: {
+    loadStatus: (state) => state.status,
+  },
   mutations: {},
   actions: {},
   modules: {

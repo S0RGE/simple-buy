@@ -6,6 +6,7 @@ export default {
   }),
   actions: {
     MAKE_AN_ORDER: ({ commit, rootState }) => {
+      rootState.status = 'loading';
       return new Promise((resolve, reject) => {
         makeAnOrderRequest(rootState.auth.token)
           .then((response) => {
@@ -16,9 +17,11 @@ export default {
           .catch((error) => {
             reject(error);
           });
+          rootState.status = '';
       });
     },
     ORDER_REQ: ({ commit, rootState }) => {
+      rootState.status = 'loading';
       return new Promise((resolve, reject) => {
         getOrderRequest(rootState.auth.token)
           .then((response) => {
@@ -28,6 +31,7 @@ export default {
           .catch((error) => {
             reject(error);
           });
+          rootState.status = '';
       });
     },
   },

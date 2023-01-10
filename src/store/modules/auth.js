@@ -7,7 +7,6 @@ import {
 export default {
   state: () => ({
     token: localStorage.getItem('user-token') || '',
-    status: '',
   }),
   mutations: {
     AUTH_SUCCESS: (state, token) => {
@@ -22,11 +21,11 @@ export default {
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
-    authStatus: (state) => state.status,
     getToken: (state) => state.token,
   },
   actions: {
-    AUTH_REQUEST: ({ commit }, user) => {
+    AUTH_REQUEST: ({ commit, rootState }, user) => {
+      rootState.status = 'loading';
       return new Promise((resolve, reject) => {
         loginRequest(user)
           .then((token) => {
@@ -39,9 +38,11 @@ export default {
             localStorage.removeItem('user-token');
             reject();
           });
+        rootState.status = '';
       });
     },
-    REG_REQUEST: ({ commit }, user) => {
+    REG_REQUEST: ({ commit, rootState }, user) => {
+      rootState.status = 'loading';
       return new Promise((resolve, reject) => {
         registrationRequest(user)
           .then((token) => {
@@ -54,15 +55,18 @@ export default {
             localStorage.removeItem('user-token');
             reject();
           });
+        rootState.status = '';
       });
     },
     AUTH_LOGOUT: ({ commit, state, rootState }) => {
+      rootState.status = 'loading';
       return new Promise((resolve) => {
         logoutRequest(state.token).then(() => {
           commit('AUTH_LOGOUT');
           localStorage.removeItem('user-token');
           rootState.product.cart = [];
           resolve();
+          rootState.status = '';
         });
       });
     },
