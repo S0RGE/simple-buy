@@ -38,7 +38,7 @@
 
     <v-text-field
       v-model="passwordRepeate"
-      :rules="passwordRules"
+      :rules="[passwordRules, matchingPassword]"
       type="password"
       label="Password repeate"
       required
@@ -73,13 +73,10 @@ export default {
 
   methods: {
     register() {
-      // TODO: create validation
       if (!this.valid) {
         return;
       }
-      if (this.password !== this.passwordRepeate) {
-        return;
-      }
+
       const userData = {
         fio: this.userFullname,
         email: this.email,
@@ -88,6 +85,15 @@ export default {
       this.$store
         .dispatch('REG_REQUEST', userData)
         .then(() => this.$router.push('/'));
+    },
+  },
+  methods: {
+    matchingPassword(value) {
+      if (value === this.password) {
+        return true;
+      } else {
+        return 'Passwords must match';
+      }
     },
   },
   computed: {
