@@ -5,17 +5,18 @@
         Order {{ index + 1 }}
       </v-tab>
     </v-tabs>
-
-    <v-card-text>
-      <v-window v-model="tab">
-        <order-component
-          v-for="(order, index) in orders"
-          :key="order.id"
-          :order="order"
-          :index="index"
-        />
-      </v-window>
-    </v-card-text>
+    <v-container>
+      <v-card-text>
+        <v-window v-model="tab">
+          <order-component
+            v-for="(order, index) in orders"
+            :key="order.id"
+            :order="order"
+            :index="index"
+          />
+        </v-window>
+      </v-card-text>
+    </v-container>
   </v-card>
 </template>
 
@@ -30,7 +31,7 @@ export default {
     if (this.$store.getters.getAllProducts.length <= 0)
       this.$store.dispatch('PRODUCT_REQ');
     // if (this.$store.getters.getAllOrders.length <= 0)
-      this.$store.dispatch('ORDER_REQ');
+    this.$store.dispatch('ORDER_REQ');
   },
   computed: {
     orders() {

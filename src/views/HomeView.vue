@@ -59,7 +59,7 @@ export default {
       );
     },
     paginationLength() {
-      return Math.round(
+      return Math.ceil(
         this.$store.getters.getAllProducts.length / this.productsPerPage
       );
     },

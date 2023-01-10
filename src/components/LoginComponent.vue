@@ -4,7 +4,6 @@
       @submit.prevent="login"
       ref="form"
       class="v-col-sm-12 v-col-lg-10 mx-auto"
-      v-model="valid"
       lazy-validation
     >
       <v-text-field
@@ -30,22 +29,22 @@
 
 <script>
 export default {
-  data: () => ({
-    valid: false,
-    email: 'JohnDoe666@mail.ru',
-    emailRules: [
-      (v) => !!v || 'E-mail is required',
-      (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-    passwordRules: [(v) => !!v || 'Password is required'],
-    password: 'qweASD123',
-  }),
+  data: () => {
+    return {
+      email: 'JohnDoe666@mail.ru',
+      emailRules: [
+        (v) => !!v || 'E-mail is required',
+        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      passwordRules: [(v) => !!v || 'Password is required'],
+      password: 'qweASD123',
+    };
+  },
 
   methods: {
-    login() {
-      if (!this.valid) {
-        return;
-      }
+    async login() {
+      const { valid } = await this.$refs.form.validate();
+      if (!valid) return;
       const userData = {
         email: this.email,
         password: this.password,
