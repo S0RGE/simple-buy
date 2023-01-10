@@ -10,7 +10,13 @@ export const getProduct = (token) => {
       },
     })
       .then((response) => response.json())
-      .then((result) => resolve(result))
+      .then((result) => {
+        if (result.error) {
+          reject(result);
+        } else {
+          resolve(result);
+        }
+      })
       .catch((error) => reject(error));
   });
 };
@@ -26,7 +32,11 @@ export const getCart = (token) => {
     })
       .then((response) => response.json())
       .then((result) => {
-        resolve(result);
+        if (result.error) {
+          reject(result);
+        } else {
+          resolve(result);
+        }
       })
       .catch((error) => reject(error));
   });
@@ -42,7 +52,13 @@ export const addToCart = ({ productId, token }) => {
       },
     })
       .then((response) => response.json())
-      .then((result) => resolve(result))
+      .then((result) => {
+        if (result.error) {
+          reject(result);
+        } else {
+          resolve(result);
+        }
+      })
       .catch((error) => reject(error));
   });
 };
@@ -57,7 +73,13 @@ export const removeFromCart = ({ productId, token }) => {
       },
     })
       .then((response) => response.json())
-      .then((result) => resolve(result))
+      .then((result) => {
+        if (result.error) {
+          reject(result);
+        } else {
+          resolve(result);
+        }
+      })
       .catch((error) => reject(error));
   });
 };

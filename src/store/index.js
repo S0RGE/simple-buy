@@ -6,9 +6,11 @@ import order from './modules/order.js';
 export default createStore({
   state: {
     status: '',
+    error: ''
   },
   getters: {
-    loadStatus: (state) => state.status,
+    getStatus: (state) => state.status,
+    getError: (state) => state.error,
   },
   mutations: {},
   actions: {},

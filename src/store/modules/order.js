@@ -1,4 +1,5 @@
 import { makeAnOrderRequest, getOrderRequest } from '@/utils/ordersApi.js';
+import { setError } from '@/utils/error';
 
 export default {
   state: () => ({
@@ -15,6 +16,7 @@ export default {
             resolve();
           })
           .catch((error) => {
+            setError(error.error.message, rootState);
             reject(error);
           });
           rootState.status = '';
@@ -29,6 +31,7 @@ export default {
             resolve(response);
           })
           .catch((error) => {
+            setError(error.error.message, rootState);
             reject(error);
           });
           rootState.status = '';

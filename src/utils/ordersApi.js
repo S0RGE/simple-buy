@@ -10,7 +10,13 @@ export const makeAnOrderRequest = (token) => {
       },
     })
       .then((response) => response.json())
-      .then((result) => resolve(result))
+      .then((result) => {
+        if (result.error) {
+          reject(result);
+        } else {
+          resolve(result);
+        }
+      })
       .catch((error) => reject(error));
   });
 };
@@ -25,7 +31,13 @@ export const getOrderRequest = (token) => {
       },
     })
       .then((response) => response.json())
-      .then((result) => resolve(result))
+      .then((result) => {
+        if (result.error) {
+          reject(result);
+        } else {
+          resolve(result);
+        }
+      })
       .catch((error) => reject(error));
   });
 };

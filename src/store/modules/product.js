@@ -5,6 +5,8 @@ import {
   removeFromCart,
 } from '@/utils/productApi.js';
 
+import { setError } from '@/utils/error';
+
 export default {
   state: () => ({
     products: [],
@@ -32,7 +34,7 @@ export default {
         .then((response) => {
           commit('PRODUCT_REQ', response.data);
         })
-        .catch((error) => console.error(error));
+        .catch((error) => setError(error.error.message, rootState));
       rootState.status = '';
     },
     ADD_TO_CART: ({ commit, rootState }, productId) => {
@@ -77,9 +79,10 @@ export default {
             resolve(response);
           })
           .catch((error) => {
+            setError(error.error.message, rootState);
             reject(error);
           });
-          rootState.status = '';
+        rootState.status = '';
       });
     },
   },

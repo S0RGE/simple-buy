@@ -10,7 +10,13 @@ export const loginRequest = (userData) => {
       body: JSON.stringify(userData),
     })
       .then((response) => response.json())
-      .then((result) => resolve(result.data.user_token))
+      .then((result) => {
+        if (result.error) {
+          reject(result);
+        } else {
+          resolve(result.data.user_token);
+        }
+      })
       .catch((error) => {
         reject(error);
       });
@@ -27,7 +33,13 @@ export const registrationRequest = (userData) => {
       body: JSON.stringify(userData),
     })
       .then((response) => response.json())
-      .then((result) => resolve(result.data.user_token))
+      .then((result) => {
+        if (result.error) {
+          reject(result);
+        } else {
+          resolve(result.data.user_token);
+        }
+      })
       .catch((error) => {
         reject(error);
       });

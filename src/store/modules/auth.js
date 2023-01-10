@@ -4,6 +4,8 @@ import {
   logoutRequest,
 } from '@/utils/apiAuth.js';
 
+import { setError } from '@/utils/error.js';
+
 export default {
   state: () => ({
     token: localStorage.getItem('user-token') || '',
@@ -33,7 +35,8 @@ export default {
             localStorage.setItem('user-token', token);
             resolve();
           })
-          .catch(() => {
+          .catch((error) => {
+            setError(error.error.message, rootState);
             commit('AUTH_ERROR');
             localStorage.removeItem('user-token');
             reject();
@@ -50,7 +53,8 @@ export default {
             localStorage.setItem('user-token', token);
             resolve();
           })
-          .catch(() => {
+          .catch((error) => {
+            setError(error.error.message, rootState);
             commit('AUTH_ERROR');
             localStorage.removeItem('user-token');
             reject();
