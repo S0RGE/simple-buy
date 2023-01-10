@@ -20,8 +20,8 @@ export default {
         .catch((error) => console.error(error));
     },
     ADD_TO_CART: ({ commit, rootState }, productId) => {
-      addToCart({ productId, token: rootState.auth.token }).then(() =>
-        commit('ADD_TO_CART', productId)
+      addToCart({ productId, token: rootState.auth.token }).then((prod) =>
+        commit('ADD_TO_CART', prod.data)
       );
     },
     INCREMENT_PRODUCT_COUNT: ({ commit, state, rootState }, productId) => {
@@ -61,20 +61,16 @@ export default {
     CART_REQ: (state, products) => {
       state.cart = products;
     },
-    ADD_TO_CART: (state, productId) => {
-      // Since only the answer ok comes from the backend, you need to add product_id and id, the creation algorithm is simply an increase by 1
-
-      let newProductId = state.cart[state.cart.length - 1].id;
-      state.cart.push(
-        Object.assign(
-          {},
-          state.products.find((product) => product.id === productId),
-          {
-            product_id: productId,
-            id: ++newProductId,
-          }
-        )
+    ADD_TO_CART: (state, {product_id, product_cart_id}) => {
+      const productToAdd = state.products.find(
+        (pr) => pr.id === product_id
       );
+      const formatedProduct = Object.assign({}, productToAdd, {
+        product_id,
+        id: product_cart_id,
+      });
+
+      state.cart.push(formatedProduct);
     },
     INCREMENT_PRODUCT_COUNT: (state, productId) => {
       const productToIncrement = state.cart.find(

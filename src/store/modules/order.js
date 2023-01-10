@@ -6,9 +6,16 @@ export default {
   }),
   actions: {
     MAKE_AN_ORDER: ({ commit, rootState }) => {
-      makeAnOrderRequest(rootState.auth.token).then((response) => {
-        commit('MAKE_AN_ORDER', response);
-        rootState.product.cart = [];
+      return new Promise((resolve, reject) => {
+        makeAnOrderRequest(rootState.auth.token)
+          .then((response) => {
+            commit('MAKE_AN_ORDER', response);
+            rootState.product.cart = [];
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
     },
     ORDER_REQ: ({ commit, rootState }) => {

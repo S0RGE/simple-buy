@@ -20,7 +20,7 @@
         </tr>
       </tbody>
     </v-table>
-    <h2>Total : {{ order.order_price }} p.</h2>
+    <h2>Total : {{ order.order_price }}</h2>
   </v-window-item>
 </template>
 
@@ -37,7 +37,7 @@ export default {
   computed: {
     products() {
       const products = [];
-      this.order.products.forEach((prodId) => {
+      this.order.products?.forEach((prodId) => {
         const prod = this.$store.getters.getProdustById(prodId);
         const elem = products.find((p) => p.id === prodId);
         if (!elem) {

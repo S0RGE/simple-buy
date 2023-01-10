@@ -56,11 +56,12 @@ export default {
           });
       });
     },
-    AUTH_LOGOUT: ({ commit, state }) => {
+    AUTH_LOGOUT: ({ commit, state, rootState }) => {
       return new Promise((resolve) => {
         logoutRequest(state.token).then(() => {
           commit('AUTH_LOGOUT');
           localStorage.removeItem('user-token');
+          rootState.product.cart = [];
           resolve();
         });
       });

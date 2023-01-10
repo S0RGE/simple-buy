@@ -29,7 +29,7 @@ export default {
   created() {
     if (this.$store.getters.getAllProducts.length <= 0)
       this.$store.dispatch('PRODUCT_REQ');
-    if (this.$store.getters.getAllOrders.length <= 0)
+    // if (this.$store.getters.getAllOrders.length <= 0)
       this.$store.dispatch('ORDER_REQ');
   },
   computed: {

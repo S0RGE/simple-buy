@@ -24,8 +24,13 @@
         </tr>
       </tbody>
     </v-table>
-    <h2>Total : {{ total }} </h2>
-    <v-btn v-if="total > 0" variant="flat" @click="makeAnOrder()" color="secondary">
+    <h2>Total : {{ total }}</h2>
+    <v-btn
+      v-if="total > 0"
+      variant="flat"
+      @click="makeAnOrder()"
+      color="secondary"
+    >
       Make an order
     </v-btn>
   </v-container>
@@ -45,7 +50,9 @@ export default {
   },
   methods: {
     makeAnOrder() {
-      this.$store.dispatch('MAKE_AN_ORDER');
+      this.$store
+        .dispatch('MAKE_AN_ORDER')
+        .then(() => this.$router.push('/orders'));
     },
     addToCart(productId) {
       this.$store.dispatch('INCREMENT_PRODUCT_COUNT', productId);
@@ -55,7 +62,8 @@ export default {
     },
   },
   created() {
-    if (this.$store.getters.getCart.length <= 0) this.$store.dispatch('CART_REQ');
+    if (this.$store.getters.getCart.length <= 0)
+      this.$store.dispatch('CART_REQ');
   },
 };
 </script>
