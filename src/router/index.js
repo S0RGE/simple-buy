@@ -55,6 +55,7 @@ const routes = [
     component: function () {
       return import('../components/SignupComponent.vue');
     },
+    beforeEnter: ifNotAuthenticated,
   },
 ];
 const router = createRouter({

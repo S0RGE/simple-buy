@@ -32,6 +32,7 @@ export default {
       rootState.status = 'loading';
       getProduct(rootState.auth.token)
         .then((response) => {
+          // dispatch('order/getSome', {}, { root: true })
           commit('PRODUCT_REQ', response.data);
         })
         .catch((error) => setError(error.error.message, rootState));
