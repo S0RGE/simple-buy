@@ -40,10 +40,17 @@ export default {
     },
     ADD_TO_CART: ({ commit, rootState }, productId) => {
       rootState.status = 'loading';
-      addToCart({ productId, token: rootState.auth.token }).then((prod) =>
-        commit('ADD_TO_CART', prod.data)
-      );
-      rootState.status = '';
+      return new Promise((resolve, reject) => {
+        addToCart({ productId, token: rootState.auth.token })
+          .then((prod) => {
+            commit('ADD_TO_CART', prod.data);
+            resolve(prod.data);
+            rootState.status = '';
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     },
     INCREMENT_PRODUCT_COUNT: ({ commit, state, rootState }, productId) => {
       rootState.status = 'loading';

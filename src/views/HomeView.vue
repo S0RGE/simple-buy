@@ -40,9 +40,6 @@ export default {
     ProductComponent,
   },
   methods: {
-    addToCart(productId) {
-      this.$store.dispatch('ADD_TO_CART', productId);
-    },
     productNumber(idx) {
       return idx + 1 + this.productsPerPage * (this.page - 1);
     },
@@ -64,8 +61,8 @@ export default {
       );
     },
     isAuthenticated() {
-      return this.$store.getters.isAuthenticated
-    }
+      return this.$store.getters.isAuthenticated;
+    },
   },
 };
 </script>
