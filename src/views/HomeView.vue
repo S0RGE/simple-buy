@@ -16,7 +16,6 @@
           :product="product"
           :key="product.id"
           :productNumber="productNumber(index)"
-          @add-to-cart="addToCart"
         />
       </tbody>
     </v-table>
@@ -27,7 +26,9 @@
 </template>
 
 <script>
-import ProductComponent from '@/components/ProductComponent.vue';
+import { mapGetters } from 'vuex';
+
+import ProductComponent from '@/components/ProductComponent';
 
 export default {
   data() {
@@ -49,19 +50,18 @@ export default {
       this.$store.dispatch('PRODUCT_REQ');
   },
   computed: {
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+      products: 'getAllProducts',
+    }),
     paginatedProducts() {
-      return this.$store.getters.getAllProducts.slice(
+      return this.products.slice(
         (this.page - 1) * this.productsPerPage,
         this.page * this.productsPerPage
       );
     },
     paginationLength() {
-      return Math.ceil(
-        this.$store.getters.getAllProducts.length / this.productsPerPage
-      );
-    },
-    isAuthenticated() {
-      return this.$store.getters.isAuthenticated;
+      return Math.ceil(this.products.length / this.productsPerPage);
     },
   },
 };

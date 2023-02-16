@@ -1,4 +1,4 @@
-import { makeAnOrderRequest, getOrderRequest } from '@/utils/ordersApi.js';
+import { fetchMakeOrderRequest, fetchGetOrderRequest } from './service';
 import { setError } from '@/utils/error';
 
 export default {
@@ -9,22 +9,8 @@ export default {
     MAKE_AN_ORDER: ({ commit, rootState }) => {
       rootState.status = 'loading';
       return new Promise((resolve, reject) => {
-        makeAnOrderRequest(rootState.auth.token)
-          .then((response) => {
-            const order_price = rootState.product.cart.reduce(
-              (acc, value) => acc + +value.price,
-              0
-            );
-            const products = rootState.product.cart.reduce(
-              (acc, value) => acc.concat(value.product_id),
-              []
-            );
-            const newOrder = {
-              id: response.data.order_id,
-              order_price,
-              products,
-            };
-
+        fetchMakeOrderRequest(rootState.auth.token, [...rootState.product.cart])
+          .then((newOrder) => {
             commit('MAKE_AN_ORDER', newOrder);
             rootState.product.cart = [];
             resolve();
@@ -39,7 +25,7 @@ export default {
     ORDER_REQ: ({ commit, rootState }) => {
       rootState.status = 'loading';
       return new Promise((resolve, reject) => {
-        getOrderRequest(rootState.auth.token)
+        fetchGetOrderRequest(rootState.auth.token)
           .then((response) => {
             commit('ORDER_REQ', response.data);
             resolve(response);

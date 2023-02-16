@@ -43,15 +43,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   computed: {
-    products() {
-      return this.$store.getters.getCart;
-    },
+    ...mapGetters({
+      products: 'getCart',
+    }),
     total() {
-      let result = 0;
-      this.products.map((el) => (result += +el.count * +el.price));
-      return result;
+      const totalSumm = this.products.reduce((acc, prod) => {
+        return (acc += +prod.count * +prod.price);
+      }, 0);
+      return totalSumm;
     },
   },
   methods: {

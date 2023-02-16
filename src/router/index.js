@@ -29,7 +29,7 @@ const routes = [
     path: '/orders',
     name: 'orders',
     component: function () {
-      return import('../views/OrdersView.vue');
+      return import('../views/OrdersView');
     },
     beforeEnter: ifAuthenticated,
   },
@@ -37,7 +37,7 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: function () {
-      return import('../views/CartView.vue');
+      return import('../views/CartView');
     },
     beforeEnter: ifAuthenticated,
   },
@@ -45,7 +45,7 @@ const routes = [
     path: '/login',
     name: 'login',
     component: function () {
-      return import('../components/LoginComponent.vue');
+      return import('../components/LoginComponent');
     },
     beforeEnter: ifNotAuthenticated,
   },
@@ -53,7 +53,7 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: function () {
-      return import('../components/SignupComponent.vue');
+      return import('../components/SignupComponent');
     },
     beforeEnter: ifNotAuthenticated,
   },

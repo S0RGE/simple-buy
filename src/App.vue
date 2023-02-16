@@ -11,10 +11,10 @@
 </template>
 
 <script>
-import NavigationComponent from '@/components/NavigationComponent.vue';
-import FooterComponent from '@/components/FooterComponent.vue';
-import LoaderComponent from './components/LoaderComponent.vue';
-import ErrorComponent from './components/ErrorComponent.vue';
+import NavigationComponent from '@/components/NavigationComponent';
+import FooterComponent from '@/components/FooterComponent';
+import LoaderComponent from './components/LoaderComponent';
+import ErrorComponent from './components/ErrorComponent';
 
 export default {
   components: {
